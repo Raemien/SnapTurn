@@ -1,0 +1,7 @@
+<settings-container>
+  <horizontal>
+    <text text='SnapTurn Settings' font-size='10'></text>
+  </horizontal>
+  <bool-setting text='Enabled' value='enable-snapturn'></bool-setting>
+  <bool-setting text='Allow Snap Turning in songs' value='enable-in-gamecore' hover-hint='Disables score submission!'></bool-setting>
+</settings-container>
