@@ -1,10 +1,10 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
   "author": "Raemien",
-  "description": "Allows for small 15-degree rotation adjustments within the main menu.",
-  "gameVersion": "1.6.0",
+  "description": "A Beat Saber mod for rotating the player using controller inputs.",
+  "gameVersion": "1.10.0",
   "id": "SnapTurn",
   "name": "SnapTurn",
-  "version": "0.0.1-alpha",
+  "version": "1.0.0",
   "features": []
 }

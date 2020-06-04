@@ -1,5 +1,5 @@
 ﻿using BeatSaberMarkupLanguage.Settings;
-using BS_Utils.Utilities;
+using BS_Utils.Gameplay;
 using IPA;
 using IPA.Config;
 using UnityEngine;
@@ -26,32 +26,30 @@ namespace SnapTurn
         [OnStart]
         public void Start()
         {
-            //PersistentSingleton<Settings>.TouchInstance();
+            PersistentSingleton<Settings>.TouchInstance();
 
-            //BSMLSettings.instance.AddSettingsMenu("SnapTurn", "SnapTurn.Views.SnapTurnSettings.bsml", Settings.instance);
+            BSMLSettings.instance.AddSettingsMenu("SnapTurn", "SnapTurn.Views.SnapTurnSettings.bsml", Settings.instance);
 
-            BSEvents.menuSceneLoaded += this.OnMenuSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
             StartTurnManager();
         }
 
 
-        private void OnMenuSceneLoaded()
+        private void OnSceneLoaded(Scene newScene, LoadSceneMode sceneMode)
         {
             StartTurnManager();
-        }
 
-
-        public void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
-        {
-            if (nextScene.name == "MenuCore" || nextScene.name == "HealthWarning")
-            StartTurnManager();
+            if (newScene.name != "GameCore")
+            {
+                ScoreSubmission.RemoveProlongedDisable("SnapTurn");
+            }
         }
 
 
         private void StartTurnManager()
         {
-            Logger.Log(IPA.Logging.Logger.Level.Info, "Loading Menu-Turning...");
+            Logger.Log(IPA.Logging.Logger.Level.Info, "Preparing SnapTurn...");
             if (turnManager == null)
             {
                 Logger.Log(IPA.Logging.Logger.Level.Debug, turnManager == null ? "TurnManager found" : "TurnManager not found");
