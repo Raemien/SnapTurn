@@ -2,6 +2,7 @@
 using BS_Utils.Gameplay;
 using IPA;
 using IPA.Config;
+using IPALogger = IPA.Logging.Logger;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,14 +13,12 @@ namespace SnapTurn
     {
         public const string assemblyName = "SnapTurn";
 
-        public static IPA.Logging.Logger Logger { get; private set; }
-
         private TurnManager turnManager;
 
         [Init]
-        public SnapTurn(IPA.Logging.Logger logger, [IPA.Config.Config.Prefer("json")] IConfigProvider cfgProvider)
+        public SnapTurn(IPALogger logger, [IPA.Config.Config.Prefer("json")] IConfigProvider cfgProvider)
         {
-            SnapTurn.Logger = logger;
+            Logger.log = logger;
         }
 
 
@@ -49,10 +48,10 @@ namespace SnapTurn
 
         private void StartTurnManager()
         {
-            Logger.Log(IPA.Logging.Logger.Level.Info, "Preparing SnapTurn...");
+            Logger.Log("Preparing SnapTurn...", IPA.Logging.Logger.Level.Info);
             if (turnManager == null)
             {
-                Logger.Log(IPA.Logging.Logger.Level.Debug, turnManager == null ? "TurnManager found" : "TurnManager not found");
+                Logger.Log(turnManager == null ? "TurnManager found" : "TurnManager not found", IPA.Logging.Logger.Level.Debug);
                 turnManager = new GameObject(nameof(TurnManager)).AddComponent<TurnManager>();
                 turnManager.InitSnapTurnScene();
             }

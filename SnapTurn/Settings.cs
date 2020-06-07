@@ -1,5 +1,7 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BS_Utils.Utilities;
+using UnityEngine;
+using System;
 
 namespace SnapTurn
 {
@@ -14,13 +16,7 @@ namespace SnapTurn
     {
         private Config config;
 
-        [UIValue("enable-snapturn")]
-        public bool EnableSnapTurn
-        {
-            get => config.GetBool("General", "Enable SnapTurn", true);
-            set => config.SetBool("General", "Enable SnapTurn", value);
-        }
-
+        internal bool SmoothTurnEnabled; 
 
 
         [UIValue("enable-in-gamecore")]
@@ -29,15 +25,39 @@ namespace SnapTurn
             get => config.GetBool("General", "Enable in Gameplay", false);
             set => config.SetBool("General", "Enable in Gameplay", value);
         }
+
+        [UIValue("rotation-step")]
+        public int RotationStep
+        {
+            get => config.GetInt("Rotation", "Rotation Step", 15);
+            set => config.SetInt("Rotation", "Rotation Step", value);
+        }
+
+        [UIValue("enable-smoothturn")]
+        public bool SmoothTurn
+        {
+            get => config.GetBool("Rotation", "Smooth Turn", false);
+            set => config.SetBool("Rotation", "Smooth Turn", value);
+        }
+
+        [UIValue("max-step")]
+        private int MaxStep
+        {
+            get => config.GetBool("Rotation", "Smooth Turn", false) ? 5 : 60;
+        }
+
+        [UIValue("enable-snapturn")]
+        public bool EnableSnapTurn
+        {
+            get => config.GetBool("General", "Enable SnapTurn", true);
+            set => config.SetBool("General", "Enable SnapTurn", value);
+        }
+
         public bool RegenerateConfig { get; internal set; }
 
         public void Awake()
         {
             config = new Config("SnapTurn");
-            if (config.GetBool("General", "Enable in Gameplay", false) == true)
-            {
-                Logger.logger.Info("snapturn enabled in gameplay");
-            }
         }
     }
 
