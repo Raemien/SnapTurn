@@ -2,9 +2,9 @@
 using BS_Utils.Gameplay;
 using IPA;
 using IPA.Config;
-using IPALogger = IPA.Logging.Logger;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using IPALogger = IPA.Logging.Logger;
 
 namespace SnapTurn
 {
@@ -38,7 +38,6 @@ namespace SnapTurn
         private void OnSceneLoaded(Scene newScene, LoadSceneMode sceneMode)
         {
             StartTurnManager();
-
             if (newScene.name != "GameCore")
             {
                 ScoreSubmission.RemoveProlongedDisable("SnapTurn");
@@ -48,13 +47,15 @@ namespace SnapTurn
 
         private void StartTurnManager()
         {
+            string curscene = SceneManager.GetActiveScene().name;
+            var config = Settings.instance;
             Logger.Log("Preparing SnapTurn...", IPA.Logging.Logger.Level.Info);
             if (turnManager == null)
             {
                 Logger.Log(turnManager == null ? "TurnManager found" : "TurnManager not found", IPA.Logging.Logger.Level.Debug);
                 turnManager = new GameObject(nameof(TurnManager)).AddComponent<TurnManager>();
-                turnManager.InitSnapTurnScene();
             }
+            turnManager.enabled = (config.EnableTurning && !(curscene == "GameCore" && !config.EnableInSongs));
         }
 
     }

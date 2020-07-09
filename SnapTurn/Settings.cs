@@ -1,7 +1,6 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BS_Utils.Utilities;
 using UnityEngine;
-using System;
 
 namespace SnapTurn
 {
@@ -16,8 +15,14 @@ namespace SnapTurn
     {
         private Config config;
 
-        internal bool SmoothTurnEnabled; 
-
+        [UIAction("reset-rotation")]
+        private void ResetRotation()
+        {
+            Logger.Log("Reseting Rotation angle...", IPA.Logging.Logger.Level.Info);
+            TurnManager tMan = FindObjectOfType<TurnManager>();
+            tMan.transform.rotation = Quaternion.Euler(0, 0, 0);
+            tMan.SetSceneRotations();
+        }
 
         [UIValue("enable-in-gamecore")]
         public bool EnableInSongs
@@ -47,10 +52,10 @@ namespace SnapTurn
         }
 
         [UIValue("enable-snapturn")]
-        public bool EnableSnapTurn
+        public bool EnableTurning
         {
-            get => config.GetBool("General", "Enable SnapTurn", true);
-            set => config.SetBool("General", "Enable SnapTurn", value);
+            get => config.GetBool("General", "Enable Joystick Turns", true);
+            set => config.SetBool("General", "Enable Joystick Turns", value);
         }
 
         public bool RegenerateConfig { get; internal set; }

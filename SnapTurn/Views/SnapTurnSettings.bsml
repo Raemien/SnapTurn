@@ -4,6 +4,7 @@
   </horizontal>
   <bool-setting text='Enabled' value='enable-snapturn'></bool-setting>
   <bool-setting text='Allow Snap Turning in songs' value='enable-in-gamecore' hover-hint='Disables score submission!'></bool-setting>
-  <slider-setting text='Rotation step' value='rotation-step' min='1' max='~max-step' integer-only='true' apply-on-change='true'></slider-setting>
   <bool-setting text='Smooth Turn' value='enable-smoothturn' apply-on-change='true'></bool-setting>
+  <slider-setting text='Rotation step' value='rotation-step' min='1' max='~max-step' integer-only='true' apply-on-change='true'></slider-setting>
+  <button text='Reset rotation' on-click='reset-rotation'/>
 </settings-container>

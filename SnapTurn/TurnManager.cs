@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.XR;
+﻿using BS_Utils.Gameplay;
 using System;
 using System.Collections.Generic;
-using BS_Utils.Gameplay;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 namespace SnapTurn
 {
@@ -12,18 +12,11 @@ namespace SnapTurn
     {
         private InputDevice leftController;
         private InputDevice rightController;
-        private GameObject currentPly;
-        private List<string> plyGameObjects = new List<string> {"Origin", "Wrapper/Origin", "Wrapper/PauseMenu/MenuControllers"};
+        private GameObject currentObj;
+        private List<string> plyGameObjects = new List<string> { "Origin", "Wrapper/Origin", "Wrapper/PauseMenu/MenuControllers" };
         private bool leftStickPress;
         private bool isFinished;
         private int turnStep;
-
-        public void InitSnapTurnScene()
-        {
-            // This is currently reduntant, although I intend to define variables here in future to improve performance.
-        }
-
-
         private void Update()
         {
             try
@@ -33,20 +26,24 @@ namespace SnapTurn
 
                 leftController.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out leftStickPress);
                 float leftStick = Input.GetAxis("HorizontalLeftHand");
+                string curscene = SceneManager.GetActiveScene().name;
+                var config = Settings.instance;
 
-                turnStep = Settings.instance.RotationStep;
+                turnStep = config.RotationStep;
 
-                if (turnStep > 5 && Settings.instance.SmoothTurn)
+                this.enabled = (config.EnableTurning && !(curscene == "GameCore" && !config.EnableInSongs));
+
+                if (turnStep > 5 && config.SmoothTurn)
                 {
                     turnStep = 5;
-                    Settings.instance.RotationStep = 5;
+                    config.RotationStep = 5;
                 }
 
                 if (!isFinished && leftStickPress)
                 {
                     switch (SceneManager.GetActiveScene().name)
                     {
-                        case "GameCore" when Settings.instance.EnableSnapTurn && Settings.instance.EnableInSongs:
+                        case "GameCore" when config.EnableTurning && config.EnableInSongs:
                             ScoreSubmission.ProlongedDisableSubmission("SnapTurn");
                             break;
                         default:
@@ -55,24 +52,26 @@ namespace SnapTurn
 
                     int spinDir = leftStick < 0 ? (0 - turnStep) : turnStep;
                     this.transform.Rotate(0, spinDir, 0, Space.World);
-
-                    for (int i = 0; i < plyGameObjects.Count; i++)
-                    {
-                        currentPly = GameObject.Find(plyGameObjects.ToArray()[i]);
-                        if (currentPly != null)
-                        {
-                            currentPly.transform.rotation = this.transform.rotation;
-                        }
-                    }
+                    SetSceneRotations();
                 }
-                isFinished = (leftStickPress && !Settings.instance.SmoothTurn);
-
+                isFinished = (leftStickPress && !config.SmoothTurn);
             }
             catch (Exception)
             {
                 throw;
             }
 
+        }
+        public void SetSceneRotations()
+        {
+            for (int i = 0; i < plyGameObjects.Count; i++)
+            {
+                currentObj = GameObject.Find(plyGameObjects.ToArray()[i]);
+                if (currentObj != null)
+                {
+                    currentObj.transform.rotation = this.transform.rotation;
+                }
+            }
         }
 
     }
