@@ -1,6 +1,7 @@
 ﻿using BS_Utils.Gameplay;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
@@ -10,24 +11,24 @@ namespace SnapTurn
 
     public class TurnManager : MonoBehaviour
     {
-        private InputDevice leftController;
-        private InputDevice rightController;
+        private InputDevice mainController;
+        private Vector2 hasJoystick;
         private GameObject currentObj;
         private List<string> plyGameObjects = new List<string> { "Origin", "Wrapper/Origin", "Wrapper/PauseMenu/MenuControllers" };
-        private bool leftStickPress;
+        private bool mainStickPress;
         private bool isFinished;
         private int turnStep;
         private void Update()
         {
             try
             {
-                leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-                rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-
-                leftController.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out leftStickPress);
-                float leftStick = Input.GetAxis("HorizontalLeftHand");
-                string curscene = SceneManager.GetActiveScene().name;
                 var config = Settings.instance;
+
+                mainController = config.SelectedController == "Left" ? InputDevices.GetDeviceAtXRNode(XRNode.LeftHand) : InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+                mainController.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out mainStickPress);
+                float mainStick = Input.GetAxis("Horizontal"+config.SelectedController+"Hand");
+                string curscene = SceneManager.GetActiveScene().name;
 
                 turnStep = config.RotationStep;
 
@@ -39,7 +40,15 @@ namespace SnapTurn
                     config.RotationStep = 5;
                 }
 
-                if (!isFinished && leftStickPress)
+                mainController.TryGetFeatureValue(CommonUsages.secondary2DAxis, out hasJoystick);
+
+                string conManu = mainController.manufacturer;
+                if (hasJoystick != Vector2.zero || (conManu == "Oculus" || (conManu == "Valve" && config.InputType == "Default")) || config.InputType == "Touch")
+                {
+                    mainStickPress = Math.Abs(mainStick) > 0.1; // Devices with joysticks shouldn't require a full press, unless overridden in settings.
+                }
+
+                if (!isFinished && mainStickPress)
                 {
                     switch (SceneManager.GetActiveScene().name)
                     {
@@ -50,11 +59,11 @@ namespace SnapTurn
                             break;
                     }
 
-                    int spinDir = leftStick < 0 ? (0 - turnStep) : turnStep;
+                    int spinDir = mainStick < 0 ? (0 - turnStep) : turnStep;
                     this.transform.Rotate(0, spinDir, 0, Space.World);
                     SetSceneRotations();
                 }
-                isFinished = (leftStickPress && !config.SmoothTurn);
+                isFinished = (mainStickPress && !config.SmoothTurn);
             }
             catch (Exception)
             {

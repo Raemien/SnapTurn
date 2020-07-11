@@ -4,7 +4,25 @@
   </horizontal>
   <bool-setting text='Enabled' value='enable-snapturn'></bool-setting>
   <bool-setting text='Allow Snap Turning in songs' value='enable-in-gamecore' hover-hint='Disables score submission!'></bool-setting>
-  <bool-setting text='Smooth Turn' value='enable-smoothturn' apply-on-change='true'></bool-setting>
-  <slider-setting text='Rotation step' value='rotation-step' min='1' max='~max-step' integer-only='true' apply-on-change='true'></slider-setting>
+  <settings-submenu text='Rotation Settings'>
+    <settings-container>
+      <horizontal>
+        <text text='Rotation Settings' font-size='10'></text>
+      </horizontal>
+      <bool-setting text='Smooth Turn' value='enable-smoothturn' apply-on-change='true'></bool-setting>
+      <slider-setting text='Rotation step' value='rotation-step' min='1' max='~max-step' integer-only='true' apply-on-change='true'></slider-setting>
+      <button text='Back' click-event='back'/>
+    </settings-container>
+  </settings-submenu>
+  <settings-submenu text='Input Settings'>
+   <settings-container>
+     <horizontal>
+       <text text='Input Settings' font-size='10'></text>
+     </horizontal>
+     <dropdown-list-setting text='Selected Controller' value='controller-type' apply-on-change='true' options='controller-options'></dropdown-list-setting>
+     <dropdown-list-setting text='Input Type' value='input-type' apply-on-change='true' options='inputtype-options'></dropdown-list-setting>
+     <button text='Back' click-event='back'/>
+   </settings-container>
+  </settings-submenu>
   <button text='Reset rotation' on-click='reset-rotation'/>
 </settings-container>
