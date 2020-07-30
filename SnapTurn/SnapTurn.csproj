@@ -182,6 +182,11 @@
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SnapTurnModifiers.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\STIconModifier.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,6 @@
+﻿<modifier-container horizontal-fit='PreferredSize'>
+  <modifier text='SnapTurn' value='enable-in-gamecore' on-change='stmodifier-onchange' apply-on-change='true' hover-hint='Disables score submission!' src='SnapTurn.Resources.STIconModifier.png'></modifier>
+  <dropdown-list-setting text='Input Type' value='input-type' apply-on-change='true' options='inputtype-options'></dropdown-list-setting>
+  <bool-setting text='Smooth Turn' value='enable-smoothturn' apply-on-change='true'></bool-setting>
+  <slider-setting text='Rotation step' value='rotation-step' min='1' max='~max-step' integer-only='true' apply-on-change='true'></slider-setting>
+</modifier-container>

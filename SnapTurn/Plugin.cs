@@ -1,4 +1,5 @@
-﻿using BeatSaberMarkupLanguage.Settings;
+﻿using BeatSaberMarkupLanguage.GameplaySetup;
+using BeatSaberMarkupLanguage.Settings;
 using BS_Utils.Gameplay;
 using IPA;
 using IPA.Config;
@@ -28,6 +29,7 @@ namespace SnapTurn
             PersistentSingleton<Settings>.TouchInstance();
 
             BSMLSettings.instance.AddSettingsMenu("SnapTurn", "SnapTurn.Views.SnapTurnSettings.bsml", Settings.instance);
+            GameplaySetup.instance.AddTab("SnapTurn", "SnapTurn.Views.SnapTurnModifiers.bsml", Settings.instance);
 
             SceneManager.sceneLoaded += OnSceneLoaded;
 

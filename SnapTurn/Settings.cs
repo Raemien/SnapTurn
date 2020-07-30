@@ -26,6 +26,13 @@ namespace SnapTurn
             tMan.SetSceneRotations();
         }
 
+        [UIAction("stmodifier-onchange")]
+        private void EnableModifier(bool newval)
+        {
+            EnableTurning = true;
+            EnableInSongs = newval;
+        }
+
         [UIValue("enable-snapturn")]
         public bool EnableTurning
         {

@@ -1,7 +1,6 @@
 ﻿using BS_Utils.Gameplay;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
@@ -13,7 +12,6 @@ namespace SnapTurn
     {
         private InputDevice mainController;
         private Vector2 hasJoystick;
-        private GameObject currentObj;
         private List<string> plyGameObjects = new List<string> { "Origin", "Wrapper/Origin", "Wrapper/PauseMenu/MenuControllers" };
         private bool mainStickPress;
         private bool isFinished;
@@ -75,7 +73,7 @@ namespace SnapTurn
         {
             for (int i = 0; i < plyGameObjects.Count; i++)
             {
-                currentObj = GameObject.Find(plyGameObjects.ToArray()[i]);
+                GameObject currentObj = GameObject.Find(plyGameObjects.ToArray()[i]);
                 if (currentObj != null)
                 {
                     currentObj.transform.rotation = this.transform.rotation;
